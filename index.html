@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="description"
+        content="Aplikasi untuk mengacak anggota, membagi kelompok, memilih ketua, dan chat privat realtime."
+    >
+    <meta
+        name="theme-color"
+        content="#000000"
+    >
+
+    <title>Pembagian Tim & Penentuan Ketua</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-shell">
+
+        <aside class="ig-sidebar" aria-label="Navigasi utama">
+
+            <a class="ig-wordmark" href="#studio" aria-label="Beranda">
+                <span class="ig-wordmark-text">Pembagian Tim</span>
+                <span class="ig-wordmark-mark" aria-hidden="true">PT</span>
+            </a>
+
+            <nav class="ig-nav">
+                <a class="ig-nav-item active" href="#studio">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
+                    <span>Beranda</span>
+                </a>
+                <a class="ig-nav-item" href="#hasil">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+                    <span>Hasil</span>
+                </a>
+                <a class="ig-nav-item" href="#admin">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 19.5c.7-3 3.4-4.5 7-4.5s6.3 1.5 7 4.5"/></svg>
+                    <span>Aturan</span>
+                </a>
+                <a class="ig-nav-item" href="#pesan">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8A2.5 2.5 0 0 1 17.5 17H9l-4.2 3.2A.8.8 0 0 1 3.5 19.5v-13z"/></svg>
+                    <span>Pesan</span>
+                </a>
+            </nav>
+
+            <div class="ig-sidebar-foot">
+                <button
+                    id="themeToggle"
+                    class="ig-nav-item theme-toggle"
+                    type="button"
+                    aria-label="Aktifkan mode terang"
+                    aria-pressed="true"
+                    title="Ubah tema"
+                >
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M4.8 4.8l1.6 1.6M17.6 17.6l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.8 19.2l1.6-1.6M17.6 6.4l1.6-1.6"/></svg>
+                    <span class="theme-label">Mode terang</span>
+                </button>
+            </div>
+
+        </aside>
+
+        <div class="app-stage">
+
+            <header class="ig-topbar">
+                <a class="ig-wordmark ig-wordmark-mobile" href="#studio" aria-label="Beranda">
+                    <span class="ig-wordmark-text">Pembagian Tim</span>
+                </a>
+
+                <label class="ig-search" for="memberSearch">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+                    <input
+                        id="memberSearch"
+                        type="search"
+                        placeholder="Cari"
+                        autocomplete="off"
+                        aria-label="Cari anggota di daftar"
+                    >
+                </label>
+
+                <div class="ig-top-actions">
+                    <a class="ig-icon-btn" href="#pesan" aria-label="Pesan">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8A2.5 2.5 0 0 1 17.5 17H9l-4.2 3.2A.8.8 0 0 1 3.5 19.5v-13z"/></svg>
+                    </a>
+                    <button
+                        id="themeToggleMobile"
+                        class="ig-icon-btn theme-toggle-mobile"
+                        type="button"
+                        aria-label="Aktifkan mode terang"
+                        aria-pressed="true"
+                        title="Ubah tema"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M4.8 4.8l1.6 1.6M17.6 17.6l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.8 19.2l1.6-1.6M17.6 6.4l1.6-1.6"/></svg>
+                    </button>
+                </div>
+            </header>
+
+            <main class="ig-feed">
+
+                <div class="ig-stories" aria-label="Ringkasan">
+                    <div class="ig-story">
+                        <span class="ig-story-ring" id="storyMemberCount">0</span>
+                        <small>Anggota</small>
+                    </div>
+                    <div class="ig-story">
+                        <span class="ig-story-ring" id="storyGroupCount">10</span>
+                        <small>Tim</small>
+                    </div>
+                    <div class="ig-story">
+                        <span class="ig-story-ring" id="storyLeaderCount">1</span>
+                        <small>Ketua</small>
+                    </div>
+                    <div class="ig-story">
+                        <span class="ig-story-ring live" id="storyChatState">Off</span>
+                        <small>Chat</small>
+                    </div>
+                </div>
+
+                <section class="auth-panel" id="akun">
+
+                    <form
+                        id="authLoginForm"
+                        class="auth-login-form"
+                    >
+                        <div class="auth-copy">
+                            <strong>Masuk</strong>
+                            <p id="authHint">
+                                Buat akun atau masuk dengan username
+                            </p>
+                        </div>
+
+                        <label class="sr-only" for="authUsernameInput">Username</label>
+                        <input
+                            id="authUsernameInput"
+                            type="text"
+                            placeholder="Username"
+                            autocomplete="username"
+                            maxlength="30"
+                            minlength="2"
+                            autocapitalize="none"
+                            spellcheck="false"
+                            required
+                        >
+
+                        <label class="sr-only" for="authPasswordInput">Password</label>
+                        <input
+                            id="authPasswordInput"
+                            type="password"
+                            placeholder="Password minimal 6 karakter"
+                            autocomplete="current-password"
+                            minlength="6"
+                            required
+                        >
+
+                        <div class="auth-actions">
+                            <button
+                                id="loginButton"
+                                class="auth-login-button"
+                                type="submit"
+                            >
+                                Masuk
+                            </button>
+                            <button
+                                id="signupButton"
+                                class="auth-signup-button"
+                                type="button"
+                            >
+                                Daftar
+                            </button>
+                        </div>
+                    </form>
+
+                    <div
+                        id="authLoggedIn"
+                        class="auth-logged-in"
+                        style="display: none;"
+                    >
+                        <span id="authAvatar" class="auth-avatar" aria-hidden="true">P</span>
+                        <div class="auth-user-copy">
+                            <strong id="authName">Pengguna</strong>
+                            <small id="authEmail"></small>
+                        </div>
+                        <button
+                            id="logoutButton"
+                            class="logout-button"
+                            type="button"
+                        >
+                            Keluar
+                        </button>
+                    </div>
+
+                    <small
+                        id="authStatus"
+                        class="auth-status"
+                        role="status"
+                    >
+                        Menyiapkan login...
+                    </small>
+
+                </section>
+
+                <article class="ig-post" id="studio">
+
+                    <header class="ig-post-head">
+                        <span class="ig-avatar" aria-hidden="true">PT</span>
+                        <div>
+                            <strong>pembagian.tim</strong>
+                            <small>Data anggota</small>
+                        </div>
+                    </header>
+
+                    <div class="ig-post-body">
+
+                        <label class="sr-only" for="memberInput">Daftar nama anggota</label>
+                        <textarea
+                            id="memberInput"
+                            maxlength="10000"
+                            aria-describedby="memberInputHint"
+                            placeholder="Tulis satu nama tiap baris...
+Andi Heru Nugraha
+Budi Santoso
+Citra Rahmatina"
+                        ></textarea>
+
+                        <div class="member-info" id="memberInputHint">
+                            <span id="memberCount" aria-live="polite">0 anggota</span>
+                            <span id="draftStatus">Tersimpan lokal otomatis</span>
+                        </div>
+
+                        <p
+                            id="inputStatus"
+                            class="form-status"
+                            role="status"
+                            aria-live="polite"
+                        ></p>
+
+                        <div class="section-label">Pembagian Tim</div>
+
+                        <div class="distribution-options">
+                            <label class="radio-option">
+                                <input type="radio" name="distributionMode" value="groups" checked>
+                                <span>
+                                    <strong>Jumlah tim</strong>
+                                    <small>Tentukan jumlah kelompok</small>
+                                </span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="distributionMode" value="members">
+                                <span>
+                                    <strong>Anggota per tim</strong>
+                                    <small>Tentukan jumlah anggota</small>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="input-group">
+                            <label id="amountLabel" for="amountInput">Jumlah tim</label>
+                            <input type="number" id="amountInput" value="10" min="1">
+                        </div>
+
+                        <div class="leader-box">
+                            <div class="leader-header">
+                                <div>
+                                    <strong>Penentuan Perwakilan</strong>
+                                    <p>Dipilih secara otomatis dari setiap tim</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="leaderToggle" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="leader-count-wrapper" id="leaderCountWrapper">
+                                <label for="leaderCount">Jumlah perwakilan tiap tim</label>
+                                <input type="number" id="leaderCount" value="1" min="1">
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <p>
+                                Sistem mengacak seluruh anggota lalu membagi mereka seimbang.
+                                <br>
+                                <small>Tip: tekan Ctrl + Enter untuk langsung menjalankan.</small>
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <footer class="ig-post-foot">
+                        <div class="button-row">
+                            <button id="resetButton" class="btn btn-secondary" type="button">Reset</button>
+                            <button id="spinButton" class="btn btn-primary" type="button">Jalankan</button>
+                        </div>
+                    </footer>
+
+                </article>
+
+                <article class="ig-post" id="hasil">
+
+                    <header class="ig-post-head">
+                        <span class="ig-avatar" aria-hidden="true">HS</span>
+                        <div>
+                            <strong>hasil.pembagian</strong>
+                            <small id="resultStatus">Belum ada pembagian</small>
+                        </div>
+                        <div
+                            class="status-badge"
+                            id="statusBadge"
+                            role="status"
+                            aria-live="polite"
+                        >
+                            Menunggu
+                        </div>
+                    </header>
+
+                    <div class="ig-post-body">
+                        <div
+                            id="resultStats"
+                            class="result-stats"
+                            aria-live="polite"
+                            hidden
+                        >
+                            <span id="resultMemberStat">0 anggota</span>
+                            <span id="resultGroupStat">0 kelompok</span>
+                            <span id="resultLeaderStat">0 perwakilan</span>
+                        </div>
+
+                        <div id="emptyResult" class="empty-result">
+                            <h3>Belum Ada Hasil</h3>
+                            <p>Masukkan daftar anggota kemudian tekan tombol Jalankan.</p>
+                        </div>
+
+                        <div id="groupsContainer" class="groups-container"></div>
+
+                        <div
+                            id="exportActions"
+                            class="export-actions"
+                            style="display: none;"
+                        >
+                            <button id="copyButton" class="export-btn copy-btn" type="button">Salin Hasil</button>
+                            <button id="exportButton" class="export-btn download-btn" type="button">Unduh TXT</button>
+                            <button id="printButton" class="export-btn print-btn" type="button">Cetak Hasil</button>
+                        </div>
+                    </div>
+
+                </article>
+
+                <article
+                    id="adminCard"
+                    class="ig-post admin-card"
+                    style="display: none;"
+                >
+
+                    <header class="ig-post-head" id="admin">
+                        <span class="ig-avatar" aria-hidden="true">AD</span>
+                        <div>
+                            <strong>pengaturan.kelompok</strong>
+                            <small>Hanya admin yang dapat mengubah anggota wajib tiap kelompok.</small>
+                        </div>
+                        <span class="admin-badge">ADMIN</span>
+                    </header>
+
+                    <div class="ig-post-body">
+                        <div class="admin-rule-toolbar">
+                            <div>
+                                <strong>Aturan kelompok tetap</strong>
+                                <p>Masukkan anggota yang harus selalu berada di kelompok tertentu. Anggota lain akan diacak otomatis.</p>
+                                <small class="admin-rule-hint">
+                                    Jika memakai Kelompok 8, jumlah tim otomatis minimal 8 selama jumlah anggota mencukupi.
+                                </small>
+                            </div>
+                            <button
+                                id="adminAddGroupButton"
+                                class="btn btn-secondary"
+                                type="button"
+                            >
+                                Tambah Kelompok
+                            </button>
+                        </div>
+
+                        <div id="adminGroupsEditor" class="admin-groups-editor"></div>
+
+                        <div class="admin-actions admin-actions-row">
+                            <button
+                                id="adminSaveRulesButton"
+                                class="btn btn-primary"
+                                type="button"
+                            >
+                                Simpan Semua Aturan
+                            </button>
+                        </div>
+
+                        <p
+                            id="adminStatus"
+                            class="admin-status"
+                            role="status"
+                            aria-live="polite"
+                        ></p>
+                    </div>
+
+                </article>
+
+                <article class="ig-post chat-card" id="pesan">
+
+                    <header class="ig-post-head">
+                        <span class="ig-avatar" aria-hidden="true">DM</span>
+                        <div>
+                            <strong>pesan</strong>
+                            <small>Kirim pesan pribadi ke anggota lain secara realtime</small>
+                        </div>
+                        <span
+                            id="chatConnectionStatus"
+                            class="chat-connection-status"
+                        >
+                            Login diperlukan
+                        </span>
+                    </header>
+
+                    <div id="chatSignedOut" class="chat-signed-out">
+                        <h3>Masuk untuk mulai chat</h3>
+                        <p>Login dengan username dan password untuk chat pribadi realtime.</p>
+                    </div>
+
+                    <div
+                        id="chatWorkspace"
+                        class="chat-workspace"
+                        style="display: none;"
+                    >
+                        <aside class="chat-people">
+                            <div class="chat-people-header">
+                                <h3>Anggota</h3>
+                                <span id="chatUserCount">0</span>
+                            </div>
+
+                            <label class="sr-only" for="chatSearch">Cari anggota chat</label>
+                            <input
+                                id="chatSearch"
+                                class="chat-search"
+                                type="search"
+                                placeholder="Cari anggota..."
+                                autocomplete="off"
+                            >
+
+                            <div id="chatUsers" class="chat-users">
+                                <p class="chat-placeholder">Memuat daftar anggota...</p>
+                            </div>
+                        </aside>
+
+                        <section class="chat-conversation">
+                            <div
+                                id="chatConversationHeader"
+                                class="chat-conversation-header"
+                            >
+                                Pilih anggota untuk mulai chat
+                            </div>
+
+                            <div
+                                id="chatMessages"
+                                class="chat-messages"
+                                aria-live="polite"
+                            >
+                                <p class="chat-placeholder">Pilih anggota di sebelah kiri.</p>
+                            </div>
+
+                            <form id="chatForm" class="chat-form">
+                                <label class="sr-only" for="chatInput">Pesan chat</label>
+                                <input
+                                    id="chatInput"
+                                    type="text"
+                                    maxlength="2000"
+                                    autocomplete="off"
+                                    aria-label="Tulis pesan chat"
+                                    placeholder="Tulis pesan..."
+                                    disabled
+                                >
+                                <button
+                                    id="chatSendButton"
+                                    class="btn btn-primary"
+                                    type="submit"
+                                    disabled
+                                >
+                                    Kirim
+                                </button>
+                            </form>
+                        </section>
+                    </div>
+
+                </article>
+
+            </main>
+
+            <aside class="ig-rail" aria-label="Profil">
+                <div class="ig-rail-user">
+                    <span class="ig-avatar lg" id="railAvatar" aria-hidden="true">PT</span>
+                    <div>
+                        <strong id="railName">pembagian.tim</strong>
+                        <small id="railMeta">Acak anggota · tentukan ketua</small>
+                    </div>
+                </div>
+                <p class="ig-rail-note">
+                    Hasil pembagian, aturan admin, dan pesan pribadi ada di feed yang sama.
+                </p>
+                <p class="ig-rail-legal">© Pembagian Tim</p>
+            </aside>
+
+        </div>
+
+        <nav class="ig-tabbar" aria-label="Navigasi bawah">
+            <a class="active" href="#studio" aria-label="Beranda">
+                <svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
+            </a>
+            <a href="#hasil" aria-label="Hasil">
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            </a>
+            <a href="#pesan" aria-label="Pesan">
+                <svg viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8A2.5 2.5 0 0 1 17.5 17H9l-4.2 3.2A.8.8 0 0 1 3.5 19.5v-13z"/></svg>
+            </a>
+            <a href="#akun" aria-label="Akun">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2"/><path d="M5 19.5c.8-3.2 3.5-4.8 7-4.8s6.2 1.6 7 4.8"/></svg>
+            </a>
+        </nav>
+
+    </div>
+
+    <div id="spinOverlay" class="spin-overlay">
+        <div class="spin-modal">
+            <div class="ps-logo" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+            </div>
+            <div id="spinStage" class="spin-stage">MENGACAK SEMUA ANGGOTA...</div>
+            <div id="rollingNames" class="rolling-names">Nama</div>
+            <div class="loading-bar">
+                <div id="loadingProgress" class="loading-progress"></div>
+            </div>
+            <div id="spinSubtext" class="spin-subtext">Harap tunggu...</div>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>

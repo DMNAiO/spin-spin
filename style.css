@@ -1,0 +1,1555 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #f4f2f0;
+    --surface: #ffffff;
+    --ink: #0c0a08;
+    --muted: #6d6c6b;
+    --line: #e5e7eb;
+    --line-soft: #f4f2f0;
+    --brand: #e4f222;
+    --brand-dark: #d4e21e;
+    --danger: #b42318;
+    --story: #e4f222;
+    --shadow: none;
+    --radius: 16px;
+    --sidebar: 244px;
+    --rail: 320px;
+    --topbar: 60px;
+    --tabbar: 50px;
+    --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --display: var(--font);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* =========================
+   SHELL
+========================= */
+
+.app-shell {
+    min-height: 100vh;
+}
+
+.ig-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    width: var(--sidebar);
+    padding: 8px 12px 20px;
+    border-right: 1px solid var(--line);
+    background: var(--surface);
+}
+
+.ig-wordmark {
+    display: flex;
+    align-items: center;
+    height: 92px;
+    padding: 12px 12px 16px;
+}
+
+.ig-wordmark-text {
+    font-family: "Segoe Script", "Brush Script MT", "Segoe Print", cursive;
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.ig-wordmark-mark {
+    display: none;
+    width: 28px;
+    height: 28px;
+    border: 2px solid currentColor;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 24px;
+    text-align: center;
+}
+
+.ig-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ig-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--ink);
+    font-size: 16px;
+    text-align: left;
+}
+
+.ig-nav-item.active,
+.ig-nav-item:hover {
+    background: var(--line-soft);
+    font-weight: 700;
+}
+
+.ig-nav-item svg {
+    flex: 0 0 24px;
+}
+
+.ig-nav-item.active svg {
+    fill: currentColor;
+    stroke: none;
+}
+
+.ig-sidebar-foot {
+    margin-top: auto;
+}
+
+.theme-toggle {
+    color: var(--ink);
+}
+
+.app-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 630px) var(--rail);
+    gap: 32px;
+    justify-content: center;
+    width: min(975px, calc(100% - var(--sidebar) - 40px));
+    margin-left: var(--sidebar);
+    padding: 0 20px 80px;
+}
+
+.ig-topbar,
+.ig-tabbar,
+.ig-wordmark-mobile {
+    display: none;
+}
+
+.ig-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 630px;
+    padding-top: 16px;
+}
+
+.ig-rail {
+    position: sticky;
+    top: 0;
+    height: fit-content;
+    padding-top: 36px;
+}
+
+.ig-rail-user,
+.auth-logged-in,
+.ig-post-head,
+.chat-user,
+.group-title,
+.member-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.ig-rail-user strong,
+.ig-rail-user small,
+.auth-user-copy strong,
+.auth-user-copy small,
+.chat-user-copy strong,
+.chat-user-copy small {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ig-rail-user small,
+.ig-rail-note,
+.ig-rail-legal {
+    color: var(--muted);
+}
+
+.ig-rail-note {
+    margin-top: 18px;
+    font-size: 13px;
+}
+
+.ig-rail-legal {
+    margin-top: 18px;
+    font-size: 12px;
+}
+
+.ig-avatar,
+.auth-avatar,
+.chat-user-avatar,
+.member-index,
+.group-number {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--line-soft);
+    color: var(--ink);
+    font-weight: 700;
+}
+
+.ig-avatar {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--line);
+    font-size: 11px;
+}
+
+.ig-avatar.lg,
+.auth-avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 14px;
+}
+
+/* =========================
+   STORIES
+========================= */
+
+.ig-stories {
+    display: flex;
+    gap: 16px;
+    padding: 8px 0 12px;
+    overflow-x: auto;
+}
+
+.ig-story {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 74px;
+    color: var(--ink);
+    font-size: 12px;
+}
+
+.ig-story small {
+    max-width: 74px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ig-story-ring {
+    display: grid;
+    place-items: center;
+    width: 66px;
+    height: 66px;
+    padding: 3px;
+    border-radius: 50%;
+    background: var(--story);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.ig-story-ring::before {
+    content: attr(data-label);
+}
+
+.ig-story-ring {
+    color: var(--ink);
+}
+
+.ig-story-ring::after {
+    content: "";
+}
+
+.ig-stories .ig-story-ring {
+    background:
+        linear-gradient(var(--surface), var(--surface)) padding-box,
+        var(--story) border-box;
+    border: 2px solid transparent;
+}
+
+/* =========================
+   AUTH + POSTS
+========================= */
+
+.auth-panel,
+.ig-post,
+.card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow: hidden;
+}
+
+.auth-panel {
+    padding: 16px;
+}
+
+.auth-login-form,
+.auth-logged-in {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-copy {
+    min-width: 150px;
+}
+
+.auth-copy p,
+.auth-status,
+.ig-post-head small,
+.card-title p,
+.result-header p,
+.admin-header p,
+.chat-header p,
+.member-info span:last-child,
+.leader-header p,
+.radio-option small,
+.admin-rule-toolbar p,
+.admin-rule-hint,
+.chat-user-copy small,
+.empty-result p,
+.chat-signed-out p,
+.info-box,
+.form-status,
+.admin-status {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.auth-copy strong,
+.ig-post-head strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.auth-login-form input,
+.input-group input,
+.leader-count-wrapper input,
+.admin-group-select,
+.chat-search,
+.chat-form input,
+.ig-search input {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--line-soft);
+    outline: none;
+}
+
+.auth-login-form input {
+    min-width: 0;
+}
+
+textarea,
+.admin-group-members-input {
+    width: 100%;
+    min-height: 180px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--line-soft);
+    outline: none;
+    resize: vertical;
+}
+
+textarea:focus,
+input:focus,
+select:focus {
+    border-color: #a8a8a8;
+    background: var(--surface);
+}
+
+textarea::placeholder,
+input::placeholder {
+    color: #a8a8a8;
+}
+
+.auth-actions,
+.button-row,
+.export-actions,
+.admin-actions-row {
+    display: flex;
+    gap: 8px;
+}
+
+.auth-login-button,
+.auth-signup-button,
+.logout-button,
+.btn,
+.export-btn,
+.admin-remove-group {
+    height: 34px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.auth-login-button,
+.btn-primary {
+    background: var(--brand);
+    color: #fff;
+}
+
+.auth-login-button:hover,
+.btn-primary:hover {
+    background: var(--brand-dark);
+}
+
+.auth-signup-button,
+.logout-button,
+.btn-secondary,
+.export-btn,
+.admin-remove-group {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+}
+
+.auth-login-button:disabled,
+.auth-signup-button:disabled,
+.btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.auth-status,
+.form-status,
+.admin-status {
+    display: block;
+    min-height: 16px;
+    margin-top: 8px;
+}
+
+.form-status.error,
+.admin-status.error,
+.auth-status.error {
+    color: var(--danger);
+}
+
+.auth-user-copy {
+    flex: 1;
+    min-width: 0;
+}
+
+.ig-post-head {
+    min-height: 60px;
+    padding: 10px 14px;
+}
+
+.ig-post-head > div {
+    flex: 1;
+    min-width: 0;
+}
+
+.ig-post-body {
+    padding: 0 16px 16px;
+}
+
+.ig-post-foot {
+    padding: 4px 16px 16px;
+}
+
+.member-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.section-label {
+    margin: 18px 0 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.distribution-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.radio-option,
+.leader-box,
+.info-box {
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+}
+
+.radio-option {
+    align-items: flex-start;
+    cursor: pointer;
+}
+
+.radio-option:has(input:checked) {
+    border-color: var(--ink);
+}
+
+.radio-option span,
+.leader-header > div,
+.admin-rule-card-field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.radio-option strong,
+.leader-header strong,
+.admin-rule-toolbar strong,
+.admin-rule-card-heading strong {
+    font-size: 13px;
+}
+
+.input-group,
+.leader-count-wrapper {
+    margin-top: 12px;
+}
+
+.input-group label,
+.leader-count-wrapper label,
+.admin-rule-card-field > span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.leader-box {
+    flex-direction: column;
+    margin-top: 12px;
+}
+
+.leader-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.switch {
+    position: relative;
+    width: 44px;
+    height: 26px;
+    flex: 0 0 auto;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    inset: 0;
+    border-radius: 99px;
+    background: #dbdbdb;
+    transition: background 0.15s ease;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: transform 0.15s ease;
+}
+
+.switch input:checked + .slider {
+    background: var(--ink);
+}
+
+.switch input:checked + .slider::before {
+    transform: translateX(18px);
+}
+
+.info-box {
+    margin-top: 12px;
+}
+
+.button-row .btn-primary {
+    flex: 1;
+}
+
+.status-badge,
+.chat-connection-status,
+.admin-badge,
+.result-stats span,
+.leader-tag,
+.chat-people-header span {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 10px;
+    border-radius: 99px;
+    background: var(--line-soft);
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.result-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.result-stats[hidden] {
+    display: none;
+}
+
+.empty-result,
+.chat-signed-out,
+.chat-placeholder {
+    padding: 36px 12px;
+    color: var(--muted);
+    text-align: center;
+}
+
+.empty-result h3,
+.chat-signed-out h3 {
+    margin-bottom: 4px;
+    color: var(--ink);
+    font-size: 16px;
+}
+
+.groups-container {
+    display: grid;
+    gap: 12px;
+}
+
+.group-card {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    animation: groupAppear 0.35s ease both;
+}
+
+.group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+}
+
+.group-number {
+    width: 28px;
+    height: 28px;
+    background: var(--ink);
+    color: var(--surface);
+    font-size: 12px;
+}
+
+.group-name {
+    font-weight: 600;
+}
+
+.member-total {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.group-members {
+    padding: 4px 0;
+}
+
+.member-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 44px;
+    padding: 6px 12px;
+}
+
+.member-item + .member-item {
+    border-top: 1px solid var(--line-soft);
+}
+
+.member-name {
+    flex: 1;
+}
+
+.member-index {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+}
+
+.member-name-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.leader-tag {
+    height: 22px;
+    background: #efefef;
+}
+
+.export-actions {
+    margin-top: 14px;
+}
+
+.export-btn {
+    flex: 1;
+}
+
+/* =========================
+   ADMIN
+========================= */
+
+.admin-rule-toolbar,
+.admin-rule-card-heading,
+.chat-people-header,
+.chat-conversation-header,
+.chat-form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.admin-rule-toolbar {
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.admin-rule-hint {
+    display: block;
+    margin-top: 6px;
+}
+
+.admin-groups-editor {
+    display: grid;
+    gap: 10px;
+}
+
+.admin-rule-card {
+    display: grid;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+
+.admin-group-members-input {
+    min-height: 96px;
+}
+
+.admin-actions {
+    margin-top: 12px;
+}
+
+.admin-badge {
+    background: #fff4d6;
+    color: #7a4b00;
+}
+
+/* =========================
+   CHAT
+========================= */
+
+.chat-connection-status.connected {
+    background: #e7f8ee;
+    color: #057a3a;
+}
+
+.chat-connection-status.error {
+    background: #ffe8ea;
+    color: var(--danger);
+}
+
+.chat-workspace {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    min-height: 460px;
+    border-top: 1px solid var(--line);
+}
+
+.chat-people {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border-right: 1px solid var(--line);
+}
+
+.chat-people-header,
+.chat-conversation-header {
+    min-height: 52px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    font-weight: 600;
+}
+
+.chat-search {
+    width: calc(100% - 16px);
+    margin: 8px;
+}
+
+.chat-users,
+.chat-messages {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+}
+
+.chat-users {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-user {
+    width: 100%;
+    padding: 8px 12px;
+    border: 0;
+    background: transparent;
+    text-align: left;
+}
+
+.chat-user:hover,
+.chat-user.selected {
+    background: var(--line-soft);
+}
+
+.chat-user-avatar {
+    width: 44px;
+    height: 44px;
+    overflow: hidden;
+    font-size: 14px;
+}
+
+.chat-user-avatar img,
+.chat-user-avatar.has-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.chat-user-copy {
+    min-width: 0;
+}
+
+.chat-conversation {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+}
+
+.chat-message {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    max-width: min(78%, 420px);
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--line-soft);
+    overflow-wrap: anywhere;
+}
+
+.chat-message.mine {
+    align-self: flex-end;
+    border-color: transparent;
+    background: var(--brand);
+    color: #fff;
+}
+
+.chat-message-time {
+    margin-top: 2px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.chat-message.mine .chat-message-time {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.chat-form {
+    padding: 10px;
+    border-top: 1px solid var(--line);
+}
+
+.chat-form .btn {
+    flex: 0 0 auto;
+}
+
+/* =========================
+   SPIN
+========================= */
+
+.spin-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.72);
+}
+
+.spin-overlay.active {
+    display: flex;
+}
+
+.spin-modal {
+    width: min(420px, 100%);
+    padding: 28px 24px;
+    border-radius: 16px;
+    background: #111;
+    color: #fff;
+    text-align: center;
+    animation: modalAppear 0.25s ease;
+}
+
+.ps-logo,
+.ps-logo span {
+    display: inline-grid;
+}
+
+.ps-logo {
+    grid-template-columns: 18px 18px;
+    gap: 5px;
+    margin-bottom: 16px;
+}
+
+.ps-logo span {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+}
+
+.ps-logo span:nth-child(1) { background: #0070d1; }
+.ps-logo span:nth-child(2) { background: #ff003c; }
+.ps-logo span:nth-child(3) { background: #d3135a; }
+.ps-logo span:nth-child(4) { background: #00a86b; }
+
+.spin-stage {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.rolling-names {
+    min-height: 42px;
+    margin: 12px 0;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.loading-bar {
+    height: 3px;
+    overflow: hidden;
+    border-radius: 99px;
+    background: #333;
+}
+
+.loading-progress {
+    width: 0;
+    height: 100%;
+    background: #fff;
+}
+
+.spin-subtext {
+    margin-top: 12px;
+    color: #a3a3a3;
+    font-size: 13px;
+}
+
+@keyframes modalAppear {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes groupAppear {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1260px) {
+    .ig-sidebar {
+        width: 72px;
+        padding-inline: 8px;
+    }
+
+    .ig-wordmark {
+        justify-content: center;
+        height: 72px;
+        padding: 0;
+    }
+
+    .ig-wordmark-text,
+    .ig-nav-item span,
+    .theme-label {
+        display: none;
+    }
+
+    .ig-wordmark-mark {
+        display: block;
+    }
+
+    .ig-nav-item {
+        justify-content: center;
+        padding: 12px 0;
+    }
+
+    .app-stage {
+        width: min(975px, calc(100% - 72px - 24px));
+        margin-left: 72px;
+    }
+}
+
+@media (max-width: 980px) {
+    .app-stage {
+        grid-template-columns: minmax(0, 630px);
+        width: min(670px, calc(100% - 72px - 24px));
+    }
+
+    .ig-rail {
+        display: none;
+    }
+}
+
+@media (max-width: 760px) {
+    .ig-sidebar {
+        display: none;
+    }
+
+    .app-stage {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: var(--topbar) 0 calc(var(--tabbar) + 16px);
+    }
+
+    .ig-topbar,
+    .ig-tabbar {
+        display: flex;
+    }
+
+    .ig-topbar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 30;
+        align-items: center;
+        gap: 12px;
+        height: var(--topbar);
+        padding: 0 12px;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+    }
+
+    .ig-wordmark-mobile {
+        display: flex;
+        align-items: center;
+        height: auto;
+        padding: 0;
+    }
+
+    .ig-wordmark-mobile .ig-wordmark-text {
+        display: block;
+        font-size: 24px;
+    }
+
+    .ig-search {
+        display: none;
+    }
+
+    .ig-top-actions {
+        display: flex;
+        gap: 4px;
+        margin-left: auto;
+    }
+
+    .ig-icon-btn,
+    .theme-toggle-mobile {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--ink);
+    }
+
+    .ig-feed {
+        max-width: none;
+        padding-top: 0;
+        gap: 0;
+    }
+
+    .ig-stories {
+        padding: 12px;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface);
+    }
+
+    .auth-panel,
+    .ig-post {
+        border-right: 0;
+        border-left: 0;
+        border-radius: 0;
+    }
+
+    .auth-login-form,
+    .auth-logged-in {
+        flex-wrap: wrap;
+    }
+
+    .auth-copy,
+    .auth-login-form input {
+        width: 100%;
+    }
+
+    .chat-workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .chat-people {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+    }
+
+    .chat-users {
+        max-height: 220px;
+    }
+
+    .distribution-options,
+    .button-row,
+    .export-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .button-row,
+    .export-actions {
+        display: grid;
+    }
+
+    .ig-tabbar {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 30;
+        justify-content: space-around;
+        height: var(--tabbar);
+        border-top: 1px solid var(--line);
+        background: var(--surface);
+    }
+
+    .ig-tabbar a {
+        display: grid;
+        place-items: center;
+        width: 48px;
+        color: var(--ink);
+    }
+
+    .ig-tabbar a.active svg {
+        fill: currentColor;
+        stroke: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+@media print {
+    .ig-sidebar,
+    .ig-topbar,
+    .ig-tabbar,
+    .ig-rail,
+    .ig-stories,
+    .auth-panel,
+    #studio,
+    .chat-card,
+    .admin-card,
+    .export-actions,
+    .spin-overlay {
+        display: none !important;
+    }
+
+    .app-stage,
+    .ig-feed {
+        display: block;
+        width: auto;
+        margin: 0;
+        padding: 0;
+    }
+
+    .ig-post,
+    .group-card {
+        border-color: #ccc;
+        break-inside: avoid;
+    }
+}
+
+/* Ramp-inspired monochrome surfaces with chartreuse action states */
+body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    font-weight: 400;
+}
+
+.ig-sidebar,
+.ig-topbar,
+.ig-tabbar {
+    border-color: var(--line);
+    background: var(--surface);
+    box-shadow: none;
+}
+
+.ig-wordmark-text {
+    font-family: var(--font);
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
+.ig-nav-item,
+.ig-icon-btn,
+.theme-toggle-mobile {
+    border-radius: 6px;
+}
+
+.ig-nav-item.active,
+.ig-nav-item:hover,
+.ig-tabbar a.active {
+    background: var(--line-soft);
+    box-shadow: inset 3px 0 var(--brand);
+}
+
+.ig-stories {
+    border-color: var(--line);
+    border-radius: 16px;
+    background: var(--surface);
+}
+
+.ig-story-ring,
+.ig-stories .ig-story-ring {
+    border: 0;
+    border-radius: 12px;
+    background: var(--line-soft);
+    color: var(--ink);
+}
+
+.ig-story-ring::after {
+    display: none;
+}
+
+/* Keep chartreuse on the selected control, not its whole card. */
+.radio-option:has(input:checked) {
+    border-color: var(--brand);
+    background: var(--surface);
+    background-color: var(--surface);
+}
+
+.switch input:checked + .slider {
+    background: var(--brand);
+}
+
+.auth-panel,
+.ig-post,
+.card,
+.group-card,
+.admin-rule-card,
+.radio-option,
+.leader-box,
+.info-box {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: none;
+}
+
+.ig-post-head,
+.group-header {
+    border-color: var(--line);
+}
+
+button,
+.btn,
+.auth-login-button,
+.auth-signup-button,
+.logout-button,
+.export-btn,
+.admin-remove-group {
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+.btn-primary,
+.auth-login-button {
+    border-color: var(--brand);
+    background: var(--brand);
+    color: var(--ink);
+}
+
+.btn-primary:hover,
+.auth-login-button:hover {
+    background: var(--brand-dark);
+}
+
+.btn-secondary,
+.auth-signup-button,
+.logout-button,
+.export-btn,
+.admin-remove-group {
+    border-color: var(--ink);
+    background: transparent;
+    color: var(--ink);
+}
+
+.auth-login-form input,
+.input-group input,
+.leader-count-wrapper input,
+.admin-group-select,
+.chat-search,
+.chat-form input,
+.ig-search input,
+textarea,
+.admin-group-members-input {
+    border-color: var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--ink);
+}
+
+.switch input:checked + .slider {
+    background: var(--brand);
+}
+
+.group-number,
+.ig-avatar,
+.auth-avatar,
+.chat-user-avatar,
+.member-index {
+    background: var(--line-soft);
+    color: var(--ink);
+}
+
+.status-badge,
+.chat-connection-status,
+.result-stats span,
+.leader-tag,
+.chat-people-header span,
+.admin-badge {
+    border-radius: 6px;
+    background: var(--line-soft);
+    color: var(--ink);
+}
+
+.chat-message {
+    border-color: var(--line);
+    border-radius: 12px;
+    background: var(--line-soft);
+    color: var(--ink);
+}
+
+.chat-message.mine {
+    background: var(--brand);
+    color: var(--ink);
+}
+
+.spin-modal {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: none;
+}
+
+.loading-progress {
+    background: var(--brand);
+}
+
+html[data-theme="dark"] {
+    --bg: #1a1919;
+    --surface: #242323;
+    --ink: #ffffff;
+    --muted: #b5b3b2;
+    --line: #41403f;
+    --line-soft: #302f2e;
+    --brand: #e4f222;
+    --brand-dark: #d4e21e;
+    --danger: #ff7b72;
+    --story: #e4f222;
+    color-scheme: dark;
+}
+
+html[data-theme="dark"] .ig-sidebar,
+html[data-theme="dark"] .ig-topbar,
+html[data-theme="dark"] .ig-tabbar {
+    background: var(--surface);
+}
+
+html[data-theme="dark"] .ig-story-ring,
+html[data-theme="dark"] .group-number,
+html[data-theme="dark"] .ig-avatar,
+html[data-theme="dark"] .auth-avatar,
+html[data-theme="dark"] .chat-user-avatar,
+html[data-theme="dark"] .member-index {
+    background: var(--line-soft);
+    color: var(--ink);
+    box-shadow: none;
+}
+
+html[data-theme="dark"] .auth-panel,
+html[data-theme="dark"] .ig-post,
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .group-card,
+html[data-theme="dark"] .admin-rule-card,
+html[data-theme="dark"] .radio-option,
+html[data-theme="dark"] .leader-box,
+html[data-theme="dark"] .info-box {
+    border-color: var(--line);
+    background: var(--surface);
+    box-shadow: none;
+}
+
+html[data-theme="dark"] .auth-login-form input,
+html[data-theme="dark"] .input-group input,
+html[data-theme="dark"] .leader-count-wrapper input,
+html[data-theme="dark"] .admin-group-select,
+html[data-theme="dark"] .admin-group-members-input,
+html[data-theme="dark"] .chat-search,
+html[data-theme="dark"] .chat-form input,
+html[data-theme="dark"] textarea {
+    border-color: var(--line);
+    background: var(--line-soft);
+    color: var(--ink);
+}
+
+html[data-theme="dark"] .btn-primary,
+html[data-theme="dark"] .auth-login-button,
+html[data-theme="dark"] .chat-message.mine {
+    border-color: var(--brand);
+    background: var(--brand);
+    color: #0c0a08;
+    box-shadow: none;
+}
+
+html[data-theme="dark"] .btn-secondary,
+html[data-theme="dark"] .auth-signup-button,
+html[data-theme="dark"] .logout-button,
+html[data-theme="dark"] .export-btn,
+html[data-theme="dark"] .admin-remove-group {
+    border-color: var(--line);
+    background: transparent;
+    color: var(--ink);
+}
+
+@media (max-width: 760px) {
+    .ig-stories {
+        border-radius: 0;
+    }
+}

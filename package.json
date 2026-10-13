@@ -1,0 +1,7 @@
+{
+    "name": "pembagian-tim-chat",
+    "private": true,
+    "scripts": {
+        "build": "node build-config.js"
+    }
+}
