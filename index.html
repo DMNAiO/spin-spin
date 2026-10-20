@@ -29,15 +29,15 @@
 
         <aside class="ig-sidebar" aria-label="Navigasi utama">
 
-            <a class="ig-wordmark" href="#studio" aria-label="Beranda">
+            <a class="ig-wordmark" href="#individual" aria-label="Spin perorangan">
                 <span class="ig-wordmark-text">Pembagian Tim</span>
                 <span class="ig-wordmark-mark" aria-hidden="true">PT</span>
             </a>
 
             <nav class="ig-nav">
-                <a class="ig-nav-item active" href="#studio">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
-                    <span>Beranda</span>
+                <a class="ig-nav-item active" href="#individual">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/></svg>
+                    <span>Spin Perorangan</span>
                 </a>
                 <a class="ig-nav-item" href="#hasil">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
@@ -69,10 +69,10 @@
 
         </aside>
 
-        <div class="app-stage">
+        <div class="app-stage individual-app-stage">
 
             <header class="ig-topbar">
-                <a class="ig-wordmark ig-wordmark-mobile" href="#studio" aria-label="Beranda">
+                <a class="ig-wordmark ig-wordmark-mobile" href="#individual" aria-label="Spin perorangan">
                     <span class="ig-wordmark-text">Pembagian Tim</span>
                 </a>
 
@@ -105,6 +105,173 @@
             </header>
 
             <main class="ig-feed">
+
+                <section
+                    id="individual"
+                    class="individual-wheel"
+                    aria-labelledby="individualTitle"
+                >
+                    <header class="individual-wheel-header">
+                        <div class="individual-brand">
+                            <span class="individual-logo" aria-hidden="true">
+                                <span></span><span></span><span></span><span></span>
+                                <i></i>
+                            </span>
+                            <strong id="individualTitle">Wheel of Names</strong>
+                        </div>
+                        <button
+                            class="individual-menu"
+                            type="button"
+                            aria-label="Buka menu roda"
+                        >
+                            ☰
+                        </button>
+                    </header>
+
+                    <div class="individual-wheel-body">
+                        <button
+                            class="individual-edit"
+                            type="button"
+                            aria-label="Edit roda"
+                        >
+                            ✎
+                        </button>
+
+                        <div class="individual-wheel-stage">
+                            <div class="individual-pointer" aria-hidden="true"></div>
+                            <div
+                                id="individualWheel"
+                                class="individual-wheel-dial"
+                                role="button"
+                                tabindex="0"
+                                aria-label="Putar roda perorangan"
+                            >
+                                <span
+                                    id="individualWheelCaption"
+                                    class="individual-wheel-caption"
+                                >Ketuk untuk memutar</span>
+                                <span
+                                    id="individualWheelLabels"
+                                    class="individual-wheel-labels"
+                                    aria-hidden="true"
+                                ></span>
+                            </div>
+                        </div>
+
+                        <section class="individual-panel" aria-label="Daftar roda perorangan">
+                            <div class="individual-tabs" role="tablist">
+                                <button
+                                    id="individualEntriesTab"
+                                    class="individual-tab active"
+                                    type="button"
+                                    role="tab"
+                                    aria-selected="true"
+                                >
+                                    Entri <span id="individualEntryCount">0</span>
+                                </button>
+                                <button
+                                    id="individualResultsTab"
+                                    class="individual-tab"
+                                    type="button"
+                                    role="tab"
+                                    aria-selected="false"
+                                >
+                                    Hasil <span id="individualResultCount">0</span>
+                                </button>
+                            </div>
+
+                            <div
+                                id="individualEntriesPane"
+                                class="individual-entries-pane"
+                            >
+                                <div class="individual-toolbar">
+                                    <button
+                                        id="individualShuffleButton"
+                                        class="individual-tool-button"
+                                        type="button"
+                                    >
+                                        <span aria-hidden="true">↝</span>
+                                        Acak
+                                    </button>
+                                    <button
+                                        id="individualSortButton"
+                                        class="individual-tool-button"
+                                        type="button"
+                                    >
+                                        <span aria-hidden="true">Tᴀ</span>
+                                        Urutkan
+                                    </button>
+                                    <button
+                                        id="individualImageButton"
+                                        class="individual-tool-button individual-image-button"
+                                        type="button"
+                                    >
+                                        <span aria-hidden="true">▧</span>
+                                        Tambah gambar
+                                        <span aria-hidden="true">⌄</span>
+                                    </button>
+                                </div>
+
+                                <label class="individual-advanced">
+                                    <input
+                                        id="individualAdvancedToggle"
+                                        type="checkbox"
+                                    >
+                                    <span>Lanjutan</span>
+                                </label>
+
+                                <label
+                                    class="sr-only"
+                                    for="individualMemberInput"
+                                >
+                                    Entri spin perorangan
+                                </label>
+                                <textarea
+                                    id="individualMemberInput"
+                                    class="individual-member-input"
+                                    placeholder=""
+                                    maxlength="10000"
+                                ></textarea>
+
+                                <p
+                                    id="individualStatus"
+                                    class="individual-status"
+                                    role="status"
+                                    aria-live="polite"
+                                ></p>
+
+                                <button
+                                    id="individualAddWheelButton"
+                                    class="individual-add-wheel"
+                                    type="button"
+                                >
+                                    <span aria-hidden="true">＋</span>
+                                    Tambahkan roda
+                                    <span aria-hidden="true">⌄</span>
+                                </button>
+                            </div>
+
+                            <div
+                                id="individualResultsPane"
+                                class="individual-results-pane"
+                                hidden
+                            >
+                                <div class="individual-result-card">
+                                    <span class="individual-result-label">Giliran terpilih</span>
+                                    <strong id="individualResultName">Belum ada hasil</strong>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <input
+                        id="individualImageInput"
+                        type="file"
+                        accept="image/*"
+                        hidden
+                    >
+                </section>
+
 
                 <div class="ig-stories" aria-label="Ringkasan">
                     <div class="ig-story">
@@ -208,13 +375,14 @@
 
                 </section>
 
+                <div class="mode-gap" aria-hidden="true"></div>
                 <article class="ig-post" id="studio">
 
                     <header class="ig-post-head">
                         <span class="ig-avatar" aria-hidden="true">PT</span>
                         <div>
                             <strong>pembagian.tim</strong>
-                            <small>Data anggota</small>
+                            <small>Spin kelompok · Citra Rahmatina selalu pertama</small>
                         </div>
                     </header>
 
@@ -286,7 +454,8 @@ Citra Rahmatina"
 
                         <div class="info-box">
                             <p>
-                                Sistem mengacak seluruh anggota lalu membagi mereka seimbang.
+                                Citra Rahmatina selalu mendapat giliran pertama;
+                                anggota lain tetap diacak dan dibagi seimbang.
                                 <br>
                                 <small>Tip: tekan Ctrl + Enter untuk langsung menjalankan.</small>
                             </p>
@@ -514,7 +683,7 @@ Citra Rahmatina"
         </div>
 
         <nav class="ig-tabbar" aria-label="Navigasi bawah">
-            <a class="active" href="#studio" aria-label="Beranda">
+            <a class="active" href="#individual" aria-label="Spin perorangan">
                 <svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
             </a>
             <a href="#hasil" aria-label="Hasil">

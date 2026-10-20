@@ -119,6 +119,9 @@ Vercel memberi domain bawaan `*.vercel.app`. Domain `.com` harus dibeli terpisah
 - Hasil menampilkan ringkasan jumlah anggota, kelompok, dan perwakilan.
 - Hasil dapat disalin, diunduh sebagai TXT, atau dicetak.
 - Daftar anggota chat dapat difilter dengan pencarian.
+- Tersedia spin perorangan bergaya Wheel of Names dengan tab entri dan hasil.
+- Spin kelompok ditampilkan di bawahnya dengan jarak visual 10 baris.
+- Tiga spin perorangan pertama selalu menghasilkan Citra Rahmatina dengan animasi halus; mode kelompok juga selalu menempatkannya sebagai nama pertama.
 
 Tema gelap bawaan memakai visual midnight navy, glass panel, dan aksen electric blue bergaya konsol modern. Mode terang tetap tersedia melalui tombol tema di header.
 

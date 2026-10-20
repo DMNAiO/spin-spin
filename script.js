@@ -5,6 +5,9 @@
 
 let GROUP_RULES = {};
 
+const FIRST_TURN_MEMBER =
+    "Citra Rahmatina";
+
 
 /* =========================================================
    ELEMENT
@@ -166,6 +169,54 @@ const adminSaveRulesButton =
 
 const adminStatus =
     document.getElementById("adminStatus");
+
+const individualWheel =
+    document.getElementById("individualWheel");
+
+const individualWheelCaption =
+    document.getElementById("individualWheelCaption");
+
+const individualWheelLabels =
+    document.getElementById("individualWheelLabels");
+
+const individualMemberInput =
+    document.getElementById("individualMemberInput");
+
+const individualEntryCount =
+    document.getElementById("individualEntryCount");
+
+const individualResultCount =
+    document.getElementById("individualResultCount");
+
+const individualResultName =
+    document.getElementById("individualResultName");
+
+const individualStatus =
+    document.getElementById("individualStatus");
+
+const individualEntriesTab =
+    document.getElementById("individualEntriesTab");
+
+const individualResultsTab =
+    document.getElementById("individualResultsTab");
+
+const individualEntriesPane =
+    document.getElementById("individualEntriesPane");
+
+const individualResultsPane =
+    document.getElementById("individualResultsPane");
+
+const individualShuffleButton =
+    document.getElementById("individualShuffleButton");
+
+const individualSortButton =
+    document.getElementById("individualSortButton");
+
+const individualImageButton =
+    document.getElementById("individualImageButton");
+
+const individualImageInput =
+    document.getElementById("individualImageInput");
 
 
 /* =========================================================
@@ -424,6 +475,77 @@ function shuffle(array) {
 
 
     return result;
+
+}
+
+function isFirstTurnMember(name) {
+
+    return name.trim().toLowerCase() ===
+        FIRST_TURN_MEMBER.toLowerCase();
+
+}
+
+
+function prioritizeFirstTurnMember(groups) {
+
+    const firstTurnGroupIndex =
+        groups.findIndex(
+            group =>
+                group.members.some(
+                    isFirstTurnMember
+                )
+        );
+
+
+    if (
+        firstTurnGroupIndex < 0
+    ) {
+
+        return groups;
+
+    }
+
+
+    const firstTurnGroup =
+        groups[firstTurnGroupIndex];
+
+    const firstTurnMemberIndex =
+        firstTurnGroup.members.findIndex(
+            isFirstTurnMember
+        );
+
+    const [
+        firstTurnMember
+    ] =
+        firstTurnGroup.members.splice(
+            firstTurnMemberIndex,
+            1
+        );
+
+    firstTurnGroup.members.unshift(
+        firstTurnMember
+    );
+
+
+    if (
+        firstTurnGroupIndex === 0
+    ) {
+
+        return groups;
+
+    }
+
+
+    return [
+        firstTurnGroup,
+        ...groups.slice(
+            0,
+            firstTurnGroupIndex
+        ),
+        ...groups.slice(
+            firstTurnGroupIndex + 1
+        )
+    ];
 
 }
 
@@ -724,6 +846,510 @@ function getNames() {
         );
 
 }
+
+let individualResultTotal =
+    0;
+
+let individualWheelRotation =
+    0;
+
+let individualSpinCount =
+    0;
+
+let individualSpinInProgress =
+    false;
+
+const INDIVIDUAL_SPIN_DURATION =
+    2200;
+
+
+function getIndividualNames() {
+
+    return individualMemberInput.value
+        .split("\n")
+        .map(
+            name =>
+                name.trim()
+        )
+        .filter(
+            name =>
+                name.length > 0
+        )
+        .filter(
+            (name, index, array) =>
+                array.indexOf(name) === index
+        );
+
+}
+
+const INDIVIDUAL_WHEEL_COLORS =
+    [
+        "#4aa8d8",
+        "#f7dc62",
+        "#73d7a4",
+        "#a765c9"
+    ];
+
+
+function renderIndividualWheel() {
+
+    const names =
+        getIndividualNames();
+
+    individualWheelLabels.innerHTML =
+        "";
+
+    if (
+        names.length === 0
+    ) {
+
+        individualWheel.style.backgroundImage =
+            "";
+
+        individualWheelCaption.textContent =
+            "Ketuk untuk memutar";
+
+        return;
+
+    }
+
+    const segmentSize =
+        360 /
+        names.length;
+
+    const stops =
+        names
+            .map(
+                (_, index) => {
+
+                    const start =
+                        index *
+                        segmentSize;
+
+                    const end =
+                        (
+                            index + 1
+                        ) *
+                        segmentSize;
+
+                    const color =
+                        INDIVIDUAL_WHEEL_COLORS[
+                            index %
+                            INDIVIDUAL_WHEEL_COLORS.length
+                        ];
+
+                    return `${color} ${start}deg ${end}deg`;
+
+                }
+            )
+            .join(", ");
+
+    individualWheel.style.backgroundImage =
+        `conic-gradient(from -90deg, ${stops})`;
+
+    individualWheelCaption.textContent =
+        "Ketuk untuk memutar";
+
+    const labelRadius =
+        individualWheel.clientWidth *
+        0.34;
+
+    names.forEach(
+        (name, index) => {
+
+            const label =
+                document.createElement(
+                    "span"
+                );
+
+            const midpoint =
+                (
+                    index +
+                    0.5
+                ) *
+                segmentSize;
+
+            label.className =
+                "individual-wheel-label";
+
+            label.textContent =
+                name;
+
+            label.title =
+                name;
+
+            label.style.transform =
+                `translate(-50%, -50%) rotate(${midpoint}deg) translateY(-${labelRadius}px) rotate(${-midpoint}deg)`;
+
+            individualWheelLabels.appendChild(
+                label
+            );
+
+        }
+    );
+
+}
+
+
+window.addEventListener(
+    "resize",
+    renderIndividualWheel
+);
+
+
+function updateIndividualCount() {
+
+    individualEntryCount.textContent =
+        String(
+            getIndividualNames().length
+        );
+    renderIndividualWheel();
+}
+
+
+function setIndividualStatus(message = "") {
+
+    individualStatus.textContent =
+        message;
+
+}
+
+
+function setIndividualTab(tab) {
+
+    const showResults =
+        tab === "results";
+
+    individualEntriesTab.classList.toggle(
+        "active",
+        !showResults
+    );
+
+    individualResultsTab.classList.toggle(
+        "active",
+        showResults
+    );
+
+    individualEntriesTab.setAttribute(
+        "aria-selected",
+        String(!showResults)
+    );
+
+    individualResultsTab.setAttribute(
+        "aria-selected",
+        String(showResults)
+    );
+
+    individualEntriesPane.hidden =
+        showResults;
+
+    individualResultsPane.hidden =
+        !showResults;
+
+}
+
+
+function spinIndividualWheel() {
+
+    if (
+        individualSpinInProgress
+    ) {
+
+        return;
+
+    }
+
+    const names =
+        getIndividualNames();
+
+    if (
+        names.length === 0
+    ) {
+
+        setIndividualStatus(
+            "Masukkan minimal satu nama untuk memutar roda."
+        );
+
+        setIndividualTab(
+            "entries"
+        );
+
+        individualMemberInput.focus();
+
+        return;
+
+    }
+
+    const firstTurnIndex =
+        names.findIndex(
+            isFirstTurnMember
+        );
+
+    if (
+        firstTurnIndex < 0
+    ) {
+
+        setIndividualStatus(
+            `Tambahkan ${FIRST_TURN_MEMBER}; tiga spin pertama dikunci ke nama itu.`
+        );
+
+        setIndividualTab(
+            "entries"
+        );
+
+        individualMemberInput.focus();
+
+        return;
+
+    }
+
+    const nextSpinNumber =
+        individualSpinCount + 1;
+
+    const firstThreeSpins =
+        nextSpinNumber <= 3;
+
+    const selectedName =
+        firstThreeSpins
+            ? FIRST_TURN_MEMBER
+            : names[
+                Math.floor(
+                    Math.random() *
+                    names.length
+                )
+            ];
+
+    const selectedIndex =
+        firstThreeSpins
+            ? firstTurnIndex
+            : names.findIndex(
+                name =>
+                    name ===
+                    selectedName
+            );
+
+    const segmentSize =
+        360 /
+        names.length;
+
+    const selectedMidpoint =
+        (
+            selectedIndex +
+            0.5
+        ) *
+        segmentSize;
+
+    const currentRotation =
+        (
+            individualWheelRotation %
+            360 +
+            360
+        ) %
+        360;
+
+    const pointerAlignment =
+        (
+            90 -
+            selectedMidpoint -
+            currentRotation +
+            360
+        ) %
+        360;
+
+    individualWheelRotation +=
+        1800 +
+        Math.floor(
+            Math.random() *
+            360
+        ) +
+        pointerAlignment;
+
+    individualSpinCount =
+        nextSpinNumber;
+
+    individualSpinInProgress =
+        true;
+
+    individualWheel.style.transform =
+        `rotate(${individualWheelRotation}deg)`;
+
+    individualWheel.setAttribute(
+        "aria-busy",
+        "true"
+    );
+
+    individualStatus.textContent =
+        firstThreeSpins
+            ? `Spin ${nextSpinNumber}/3 dikunci ke ${FIRST_TURN_MEMBER}.`
+            : "Roda sedang berputar...";
+
+    playClickSound();
+
+    window.setTimeout(
+        () => {
+
+            individualResultTotal++;
+
+            individualResultName.textContent =
+                selectedName;
+
+            individualResultCount.textContent =
+                String(
+                    individualResultTotal
+                );
+
+            individualSpinInProgress =
+                false;
+
+            individualWheel.removeAttribute(
+                "aria-busy"
+            );
+
+            setIndividualStatus(
+                `Hasil terakhir: ${selectedName}`
+            );
+
+            setIndividualTab(
+                "results"
+            );
+
+        },
+        INDIVIDUAL_SPIN_DURATION
+    );
+
+}
+
+
+individualMemberInput.addEventListener(
+    "input",
+    () => {
+        updateIndividualCount();
+        setIndividualStatus();
+    }
+);
+
+individualEntriesTab.addEventListener(
+    "click",
+    () => setIndividualTab("entries")
+);
+
+individualResultsTab.addEventListener(
+    "click",
+    () => setIndividualTab("results")
+);
+
+individualShuffleButton.addEventListener(
+    "click",
+    () => {
+
+        const names =
+            shuffle(
+                getIndividualNames()
+            );
+
+        individualMemberInput.value =
+            names.join("\n");
+
+        updateIndividualCount();
+
+    }
+);
+
+individualSortButton.addEventListener(
+    "click",
+    () => {
+
+        const names =
+            getIndividualNames()
+                .sort(
+                    (a, b) =>
+                        a.localeCompare(
+                            b,
+                            "id",
+                            {
+                                sensitivity:
+                                    "base"
+                            }
+                        )
+                );
+
+        individualMemberInput.value =
+            names.join("\n");
+
+        updateIndividualCount();
+
+    }
+);
+
+individualWheel.addEventListener(
+    "click",
+    spinIndividualWheel
+);
+
+individualWheel.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+            || event.key === " "
+        ) {
+
+            event.preventDefault();
+            spinIndividualWheel();
+
+        }
+
+    }
+);
+
+individualImageButton.addEventListener(
+    "click",
+    () => individualImageInput.click()
+);
+
+individualImageInput.addEventListener(
+    "change",
+    () => {
+
+        const file =
+            individualImageInput.files?.[0];
+
+        if (
+            !file
+        ) {
+
+            return;
+
+        }
+
+        const reader =
+            new FileReader();
+
+        reader.addEventListener(
+            "load",
+            () => {
+
+                individualWheel.style.backgroundImage =
+                    `url("${reader.result}")`;
+
+                individualWheel.style.backgroundSize =
+                    "cover";
+
+                individualWheel.style.backgroundPosition =
+                    "center";
+
+            }
+        );
+
+        reader.readAsDataURL(
+            file
+        );
+
+    }
+);
+
+updateIndividualCount();
 
 
 function updateMemberCount() {
@@ -1294,7 +1920,9 @@ function createGroups(names) {
     );
 
 
-    return groups;
+    return prioritizeFirstTurnMember(
+        groups
+    );
 
 }
 
@@ -1448,13 +2076,32 @@ function chooseLeaders(groups) {
                     group.members.length
                 );
 
+            const shuffledMembers =
+                shuffle(
+                    group.members
+                );
+
+            const firstTurnMember =
+                group.members.find(
+                    isFirstTurnMember
+                );
+
+            const orderedMembers =
+                firstTurnMember
+                    ? [
+                        firstTurnMember,
+                        ...shuffledMembers.filter(
+                            member =>
+                                member !==
+                                firstTurnMember
+                        )
+                    ]
+                    : shuffledMembers;
 
             result[
                 group.number
             ] =
-                shuffle(
-                    group.members
-                ).slice(
+                orderedMembers.slice(
                     0,
                     leaderAmount
                 );
@@ -2299,6 +2946,21 @@ spinButton.addEventListener(
 
             setInputStatus(
                 "Masukkan minimal 2 anggota yang berbeda.",
+                true
+            );
+
+            return;
+
+        }
+
+        if (
+            !names.some(
+                isFirstTurnMember
+            )
+        ) {
+
+            setInputStatus(
+                `Daftar anggota harus menyertakan ${FIRST_TURN_MEMBER}.`,
                 true
             );
 
